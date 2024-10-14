@@ -1,18 +1,18 @@
-import { useState } from 'react'
-import './App.css'
-import SideBar from './components/SideBar'
-import Chats from './components/chats'
+// App.js
+import React from 'react';
+import './App.css';
+import SideBar from './components/SideBar';
+import Routes from './router';
 
 function App() {
   return (
-      <div class="flex h-screen antialiased text-gray-800">
-        <div class="flex flex-row h-full w-full overflow-x-hidden">
-          <SideBar />
-          
-          <Chats />
-        </div>
+    <div className="flex h-screen antialiased text-gray-800">
+      <div className="flex flex-row h-full w-full overflow-x-hidden">
+        <SideBar />
+        <Routes />
       </div>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
