@@ -24,11 +24,11 @@ const Routes = () => {
     },
     {
       path: '/login',
-      element: <Login />,
+      element: user ? <Navigate to="/chats" /> : <Login />,
     },
     {
       path: '/signup',
-      element: <Signup />, 
+      element: user ? <Navigate to="/chats" /> : <Signup />, 
     },
     {
       path: '/chats',

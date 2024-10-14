@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom'; // Importer useNavigate
 
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); // Initialiser useNavigate
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        setError(null); // Reset error on form submission
+        setError(null); // Réinitialiser l'erreur lors de l'envoi du formulaire
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            // Redirection ou message de succès après inscription réussie
+            // Rediriger après l'inscription réussie
+            navigate('/chats'); // Changez '/dashboard' par la route souhaitée
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setError("Cette adresse e-mail est déjà associée à un compte.");
@@ -48,7 +51,7 @@ export default function Signup() {
                 >
                     S'inscrire
                 </button>
-                {error && <p className="text-red-500 mt-4">{error}</p>} {/* Display error if present */}
+                {error && <p className="text-red-500 mt-4">{error}</p>} {/* Afficher l'erreur si présente */}
             </form>
         </div>
     );
