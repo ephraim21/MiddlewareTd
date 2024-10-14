@@ -1,10 +1,10 @@
-// Routes.jsx
 import React from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Chats from './components/chats';
 import Login from './components/login';
 import { auth } from './firebase/firebaseConfig';
+import Signup from './components/Signup';
 
 const Routes = () => {
   const [user, setUser] = React.useState(null);
@@ -13,6 +13,7 @@ const Routes = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
+    
     return () => unsubscribe();
   }, []);
 
@@ -24,6 +25,10 @@ const Routes = () => {
     {
       path: '/login',
       element: <Login />,
+    },
+    {
+      path: '/signup',
+      element: <Signup />, 
     },
     {
       path: '/chats',

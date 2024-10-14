@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
-import { Link } from 'react-router-dom'; // Import Link for navigation
 
-export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+export default function Signup() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
 
-    const handleLogin = async (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
+        setError(null); // Reset error on form submission
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            // Redirection après connexion réussie
+            await createUserWithEmailAndPassword(auth, email, password);
+            // Redirection ou message de succès après inscription réussie
         } catch (error) {
-            console.error("Erreur de connexion :", error.message);
-        }
+            if (error.code === 'auth/email-already-in-use') {
+                setError("Cette adresse e-mail est déjà associée à un compte.");
+            } else {
+                setError("Erreur d'inscription : " + error.message);
+            }
+        }        
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-md w-96">
-                <h2 className="text-2xl font-bold text-center mb-4">Connexion</h2>
+            <form onSubmit={handleSignup} className="bg-white p-6 rounded-lg shadow-md w-96">
+                <h2 className="text-2xl font-bold text-center mb-4">S'inscrire</h2>
                 <input
                     type="email"
                     value={email}
@@ -41,14 +46,9 @@ export default function Login() {
                     type="submit"
                     className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded transition duration-200"
                 >
-                    Connexion
+                    S'inscrire
                 </button>
-                <p className="mt-4 text-center">
-                    Pas encore de compte?{' '}
-                    <Link to="/signup" className="text-indigo-500 hover:underline">
-                        S'inscrire
-                    </Link>
-                </p>
+                {error && <p className="text-red-500 mt-4">{error}</p>} {/* Display error if present */}
             </form>
         </div>
     );
